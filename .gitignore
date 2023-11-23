@@ -1,6 +1,6 @@
 # Rust
-debug/*
-target/*
+**/debug/*
+**/target/*
 Cargo.lock
 *.pdb
 *.rs.bk
