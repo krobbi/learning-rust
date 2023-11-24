@@ -5,7 +5,8 @@ const FAHRENHEIT_DIFFERENCE: f64 = 32.0;
 const FAHRENHEIT_FACTOR: f64 = 1.8;
 const KELVIN_DIFFERENCE: f64 = 273.15;
 
-// A unit of temperature.
+// A unit of temperature. May be passed by value and tested for equality.
+#[derive(Clone, Copy, PartialEq)]
 enum Unit {
     CELSIUS,
     FAHRENHEIT,
@@ -51,7 +52,12 @@ fn read_temperature() -> (f64, Unit) {
 }
 
 // Convert a temperature from a source unit to a target unit.
-fn convert_temperature(temperature: f64, source: &Unit, target: Unit) -> f64 {
+fn convert_temperature(temperature: f64, source: Unit, target: Unit) -> f64 {
+    // Skip conversion if source and target units match.
+    if source == target {
+        return temperature;
+    }
+    
     // Normalize temperature to Celsius.
     let temperature = match source {
         Unit::CELSIUS => temperature,
@@ -69,7 +75,7 @@ fn convert_temperature(temperature: f64, source: &Unit, target: Unit) -> f64 {
 
 fn main() {
     let (temperature, unit) = read_temperature();
-    println!("Celsius: {}", convert_temperature(temperature, &unit, Unit::CELSIUS));
-    println!("Fahrenheit: {}", convert_temperature(temperature, &unit, Unit::FAHRENHEIT));
-    println!("Kelvin: {}", convert_temperature(temperature, &unit, Unit::KELVIN));
+    println!("Celsius: {}", convert_temperature(temperature, unit, Unit::CELSIUS));
+    println!("Fahrenheit: {}", convert_temperature(temperature, unit, Unit::FAHRENHEIT));
+    println!("Kelvin: {}", convert_temperature(temperature, unit, Unit::KELVIN));
 }
